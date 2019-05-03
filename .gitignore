@@ -2,3 +2,4 @@
 IntradayData_2018/*
 .idea/
 result.csv
+*.pyc
