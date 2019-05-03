@@ -11,8 +11,8 @@ def parseMinuteData(minuteData, shortTerm, longTerm):
     return time, openingPrice, low, high, closingPrice, diff
 
 
-class MinuteEntry:
+class Minute:
 
     def __init__(self, minuteData, shortTerm, longTerm):
-        self._time, self._openingPrice, self._low, self._high, self._closingPrice, self._diff = parseMinuteData(minuteData, shortTerm, longTerm)
-        self._listPrice = 0.5 * (self._low + self._high)
+        self.time, self.openingPrice, self.low, self.high, self.closingPrice, self.diff = parseMinuteData(minuteData, shortTerm, longTerm)
+        self.listPrice = 0.5 * (self.openingPrice + self.closingPrice)

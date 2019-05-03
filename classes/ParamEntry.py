@@ -1,20 +1,31 @@
 class ParamEntry:
     def __init__(self, params, stockName):
-        self._shortTerm = params['shortTerm']
-        self._longTerm = params['longTerm']
-        self._targetPercentage = params['targetPercentage']
-        self._stopLossPercentage = params['stopLossPercentage']
-        self._entryDifference = params['entryDifference']
-        self._stockName = stockName
-        self._profitPercentage = None
+        self.shortTerm = params['shortTerm']
+        self.longTerm = params['longTerm']
+        self.targetPercentage = params['targetPercentage']
+        self.stopLossPercentage = params['stopLossPercentage']
+        self.entryDifference = params['entryDifference']
+        self.stockName = stockName
+        self.profitPercentage = None
+
 
     def getCsvPoint(self):
-        newPoint = {'stockName':self._stockName,
-                     'shortTerm':self._shortTerm,
-                     'longTerm':self._longTerm,
-                     'targetPercentage':self._targetPercentage,
-                     'stopLossPercentage':self._stopLossPercentage,
-                     'entryDifference':self._entryDifference,
-                     'profitPercentage':self._profitPercentage,
+        newPoint = {'stockName':self.stockName,
+                     'shortTerm':self.shortTerm,
+                     'longTerm':self.longTerm,
+                     'targetPercentage':self.targetPercentage,
+                     'stopLossPercentage':self.stopLossPercentage,
+                     'entryDifference':self.entryDifference,
+                     'profitPercentage':self.profitPercentage,
                      }
         return newPoint
+
+    # @property
+    # def shortTerm(self):
+    #     return self.shortTerm
+    #
+    # @shortTerm.setter
+    # def shortTerm(self, value):
+    #     self.shortTerm = value
+
+

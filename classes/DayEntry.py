@@ -1,30 +1,29 @@
-class TradeEntry:
+class Day:
 
     def __init__(self, boughtFlag = 0, money = 1):
-        self._boughtFlag = boughtFlag
-        self._dailyTrades = 0
-        self._money = money
-        self._trades = []
-        pass
+        self.boughtFlag = boughtFlag
+        self.dailyTrades = 0
+        self.money = money
+        self.trades = []
 
     def addTrade(self, trade):
-        self._money = self._money*(1 + trade.profitPercentage/100)
-        self._trades.append(trade)
-        self._dailyTrades = len(self._trades)
+        self.money = self.money*(1 + trade.profitPercentage/100.0)
+        self.trades.append(trade)
+        self.dailyTrades = len(self.trades)
         self.reset()
 
     def getLastTrade(self):
-        return self._trades[self._dailyTrades - 1]
+        return self.trades[self.dailyTrades - 1]
 
     def reset(self):
-        self._boughtFlag = 0
-    #
+        self.boughtFlag = 0
+
     # @property
     # def enterPrice(self):
-    #     return self._enterPrice
+    #     return self.enterPrice
     #
     # @enterPrice.setter
     # def enterPrice(self, value):
-    #     self._enterPrice = value
+    #     self.enterPrice = value
     #
     # #
