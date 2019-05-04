@@ -20,6 +20,10 @@ class ParamEntry:
                      }
         return newPoint
 
+    def toString(self):
+        print 'Stock Name: {}, ShortTerm: {}, LongTerm: {}, Target per {}, StopLossPer {} ' \
+              'EntryDiff: {}, ProfitPer: {}'.format(self.stockName, self.shortTerm, self.longTerm, self.targetPercentage, self.stopLossPercentage,
+                                                    self.entryDifference, self.profitPercentage)
     # @property
     # def shortTerm(self):
     #     return self.shortTerm

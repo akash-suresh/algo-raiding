@@ -1,10 +1,17 @@
 class Day:
 
-    def __init__(self, boughtFlag = 0, money = 1):
+    def __init__(self, boughtFlag = 0, money = 1, sellEndOfDay = True):
         self.boughtFlag = boughtFlag
         self.dailyTrades = 0
         self.money = money
         self.trades = []
+        self.currentTrade = None
+        self.sellEndOfDay = sellEndOfDay
+
+    def initializeNextDay(self, sellEndOfDay = True):
+        nextDay = Day(self.boughtFlag, self.money, sellEndOfDay)
+        nextDay.currentTrade = self.currentTrade
+        return nextDay
 
     def addTrade(self, trade):
         self.money = self.money*(1 + trade.profitPercentage/100.0)
@@ -17,6 +24,11 @@ class Day:
 
     def reset(self):
         self.boughtFlag = 0
+        self.currentTrade = None
+
+    def printOpenTrade(self):
+        if self.currentTrade:
+            print 'Enter Price: {}, Enter Time: {}, TradeType: {}'.format(self.currentTrade.enterPrice, self.currentTrade.timeEntered, self.currentTrade.tradeType)
 
     # @property
     # def enterPrice(self):
