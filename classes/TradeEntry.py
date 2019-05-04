@@ -35,7 +35,7 @@ class Trade:
             self.exitPrice = self.stopLossPrice
         elif exitType == 'target':
             self.exitPrice = self.targetPrice
-        elif exitType == 'eod':
+        elif exitType == 'eod' or exitType == 'renkoExit':
             self.exitPrice = eodPrice
         #todo - combine
         if self.tradeType == 1:

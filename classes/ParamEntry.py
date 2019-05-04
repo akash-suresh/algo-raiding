@@ -24,6 +24,7 @@ class ParamEntry:
         print 'Stock Name: {}, ShortTerm: {}, LongTerm: {}, Target per {}, StopLossPer {} ' \
               'EntryDiff: {}, ProfitPer: {}'.format(self.stockName, self.shortTerm, self.longTerm, self.targetPercentage, self.stopLossPercentage,
                                                     self.entryDifference, self.profitPercentage)
+
     # @property
     # def shortTerm(self):
     #     return self.shortTerm
@@ -32,4 +33,21 @@ class ParamEntry:
     # def shortTerm(self, value):
     #     self.shortTerm = value
 
+class RenkoParamEntry:
+    def __init__(self, params, stockName):
+        self.brickHeight = params['brickHeight']
+        self.stepCount = params['stepCount']
+        self.stockName = stockName
+        self.profitPercentage = None
 
+
+    def getCsvPoint(self):
+        newPoint = {'stockName':self.stockName,
+                    'brickHeight':self.brickHeight,
+                    'stepCount':self.stepCount,
+                    'profitPercentage':self.profitPercentage
+                    }
+        return newPoint
+
+    def toString(self):
+        print 'Stock Name: {}, brickHeight: {}, stepCount: {}, ProfitPer: {}'.format(self.stockName, self.brickHeight, self.stepCount, self.profitPercentage)

@@ -23,13 +23,16 @@ def calculateMovingAverage(df, shortTermList, longTermList):
         df['MA_'+str(term)] = df['openingPrice'].rolling(window=term).mean()
     return df
 
-def preProcessData(folderName, stockName, shortTermList, longTermList, movingAverage='normal'):
+def basicPreProcessing(folderName, stockName):
     df = readFromCsv(folderName, stockName)
     df.columns = ['stock', 'date','time','openingPrice','high','low','closingPrice','volume','e']
     df = df.drop('e', 1)
+    return df
+
+def preProcessData(folderName, stockName, shortTermList, longTermList, movingAverage='normal'):
+    df = basicPreProcessing(folderName, stockName)
     if movingAverage == 'normal' :
         df = calculateMovingAverage(df, shortTermList, longTermList)
     elif movingAverage == 'exponential':
         df = calculateExponentialMovingAverage(df, shortTermList, longTermList)
     return df, getDateList(df)
-
