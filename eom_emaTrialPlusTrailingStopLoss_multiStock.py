@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[6]:
 
 
 import time
@@ -14,10 +14,11 @@ from scripts.dayScript import dayScript
 from classes.ParamEntry import ParamEntry
 from classes.DayEntry import Day
 from utils.TimeUtil import isLastThursdayOfMonth
-# import copy 
+from utils.FileUtil import getFutureList
+# import copy
 
 
-# In[2]:
+# In[7]:
 
 
 def getSellEndOfDay(currentDate, stockType):
@@ -38,17 +39,17 @@ def movingAverageExperiment(paramList, stockType = 'FUTURES', verbose=False):
             print(date, newDay.money, day.money, day.dailyTrades)
             day.printOpenTrade()
         sellEndOfDay = getSellEndOfDay(date, stockType)
-        newDay = day.initializeNextDay(sellEndOfDay)   
-        
+        newDay = day.initializeNextDay(sellEndOfDay)
+
     yearlyProfitPercentage = (day.money - 1) * 100
     print(yearlyProfitPercentage)
     paramEntry.profitPercentage = yearlyProfitPercentage
     paramEntry.toString()
-   
+
     return paramEntry
 
 
-# In[3]:
+# In[8]:
 
 
 def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
@@ -77,14 +78,15 @@ def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
     return csvList
 
 
-# In[4]:
+# In[9]:
 
 
 # stockList = ['ACC_F1','ASHOKLEY_F1','AXISBANK_F1','BHARTIARTL_F1','RELIANCE_F1','INFY_F1','WIPRO_F1','PNB_F1','SBIN_F1','SUNPHARMA_F1','GRASIM_F1','LUPIN_F1','LT_F1','HINDUNILVR_F1']
-stockList = ['LUPIN_F1', 'ASHOKLEY_F1','ACC_F1']
+folderName = "IntradayData_2018"
+stockList = getFutureList(folderName)
 
 
-# In[5]:
+# In[27]:
 
 
 def getParameterGrid(parameterDict):
@@ -99,28 +101,28 @@ def getParameterDict():
 #     stopLossPercentage = [0.002, 0.006, 0.008, 0.010]
 #     entryDifference = [0.00001, 0.00005, 0.00010, 0.0002]
     # # #new
-    shortTerm = [4,8,12,16]
-    longTerm = [100,200,300,400,500]
-    targetPercentage = [0.01, 0.05, 0.075]
-    stopLossPercentage = [0.006, 0.007, 0.008, 0.010]
-    entryDifference = [0.00005, 0.000075, 0.0001]
+#     shortTerm = [4,8,12,16]
+#     longTerm = [100,200,300,400,500]
+#     targetPercentage = [0.01, 0.05, 0.075]
+#     stopLossPercentage = [0.006, 0.007, 0.008, 0.010]
+#     entryDifference = [0.00005, 0.000075, 0.0001]
     # # # #v3
-#     shortTerm = [8]
-#     longTerm = [200]
-#     targetPercentage = [0.01]
-#     stopLossPercentage = [0.006]
-#     entryDifference = [0.00005]
+    shortTerm = [2,3,4,6,8,10,12,14,16]
+    longTerm = [100,150,200,250,300,400]
+    targetPercentage = [0.01]
+    stopLossPercentage = [0.008]
+    entryDifference = [0.00005]
     parameterDict = {
-                    'shortTerm' : shortTerm, 
-                    'longTerm': longTerm, 
-                    'targetPercentage': targetPercentage, 
-                    'stopLossPercentage': stopLossPercentage, 
+                    'shortTerm' : shortTerm,
+                    'longTerm': longTerm,
+                    'targetPercentage': targetPercentage,
+                    'stopLossPercentage': stopLossPercentage,
                     'entryDifference':entryDifference
                 }
     return parameterDict
 
 
-# In[ ]:
+# In[39]:
 
 
 threadPoolSize = 24
@@ -138,7 +140,7 @@ pool.terminate()
 pool.join()
 
 
-# In[6]:
+# In[14]:
 
 
 # parameterDict = getParameterDict()
@@ -168,8 +170,8 @@ pool.join()
 #         print(date, newDay.money, day.money, day.dailyTrades)
 #     sellEndOfDay = getSellEndOfDay(date, stockType)
 #     day.printOpenTrade()
-#     newDay = day.initializeNextDay(sellEndOfDay)    
+#     newDay = day.initializeNextDay(sellEndOfDay)
 
 # yearlyProfitPercentage = (day.money - 1) * 100
-# print yearlyProfitPercentage    
+# print yearlyProfitPercentage
 
