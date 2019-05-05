@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[23]:
 
 
 import time
@@ -16,10 +16,11 @@ from classes.DayEntry import Day
 from utils.TimeUtil import isLastThursdayOfMonth
 from utils.FileUtil import getFutureList
 from collections import deque
+from utils.Constants import futuresList
 # import copy 
 
 
-# In[2]:
+# In[24]:
 
 
 def getSellEndOfDay(currentDate, stockType):
@@ -32,7 +33,8 @@ def renkoExperiment(paramList, stockType = 'FUTURES', verbose=False):
     df, dateList, paramEntry = paramList
     money = 1
     newDay = Day(0, money, getSellEndOfDay(dateList[0], stockType))
-    renkoDeque = deque(maxlen=paramEntry.width)
+    renkoDeque = deque(maxlen=paramEntry.stepCount)
+    paramEntry.setBrickHeight(df['openingPrice'][0])
     for date in dateList:
         new_df = df[(df.date == date)]
         day = renkoScript(new_df, paramEntry, newDay, renkoDeque, stockType, verbose)
@@ -41,7 +43,6 @@ def renkoExperiment(paramList, stockType = 'FUTURES', verbose=False):
             day.printOpenTrade()
         sellEndOfDay = getSellEndOfDay(date, stockType)
         newDay = day.initializeNextDay(sellEndOfDay)   
-        
     yearlyProfitPercentage = (day.money - 1) * 100
     print(yearlyProfitPercentage)
     paramEntry.profitPercentage = yearlyProfitPercentage
@@ -50,7 +51,7 @@ def renkoExperiment(paramList, stockType = 'FUTURES', verbose=False):
     return paramEntry
 
 
-# In[3]:
+# In[25]:
 
 
 def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
@@ -79,15 +80,7 @@ def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
     return csvList
 
 
-# In[4]:
-
-
-# stockList = ['ACC_F1','ASHOKLEY_F1','AXISBANK_F1','BHARTIARTL_F1','RELIANCE_F1','INFY_F1','WIPRO_F1','PNB_F1','SBIN_F1','SUNPHARMA_F1','GRASIM_F1','LUPIN_F1','LT_F1','HINDUNILVR_F1']
-folderName = "IntradayData_2018"
-stockList = getFutureList(folderName)
-
-
-# In[5]:
+# In[29]:
 
 
 def getParameterGrid(parameterDict):
@@ -95,63 +88,40 @@ def getParameterGrid(parameterDict):
     return parameterGrid
 
 def getRenkoParameterDict():
-    window = [3]
-    width = [0.008]
+    brickHeightPercentage = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+    stepCount = [3,4,5,7]
     parameterDict = {
-                    'width' : width, 
-                    'window': window
-                }
-    return parameterDict
-
-def getParameterDict():
-    # # #old
-#     shortTerm = [1,4,12,20]
-#     longTerm = [100,200,500,1000]
-#     targetPercentage = [0.01, 0.05, 0.075]
-#     stopLossPercentage = [0.002, 0.006, 0.008, 0.010]
-#     entryDifference = [0.00001, 0.00005, 0.00010, 0.0002]
-    # # #new
-#     shortTerm = [4,8,12,16]
-#     longTerm = [100,200,300,400,500]
-#     targetPercentage = [0.01, 0.05, 0.075]
-#     stopLossPercentage = [0.006, 0.007, 0.008, 0.010]
-#     entryDifference = [0.00005, 0.000075, 0.0001]
-    # # # #v3
-    shortTerm = [2,3,4,6,8,10,12,14,16]
-    longTerm = [100,150,200,250,300,400]
-    targetPercentage = [0.01]
-    stopLossPercentage = [0.008]
-    entryDifference = [0.00005]
-    parameterDict = {
-                    'shortTerm' : shortTerm, 
-                    'longTerm': longTerm, 
-                    'targetPercentage': targetPercentage, 
-                    'stopLossPercentage': stopLossPercentage, 
-                    'entryDifference':entryDifference
+                    'brickHeightPercentage' : brickHeightPercentage, 
+                    'stepCount': stepCount
                 }
     return parameterDict
 
 
-# In[ ]:
+# In[30]:
 
 
-threadPoolSize = 1
+stockList = futuresList
+
+
+# In[28]:
+
+
+threadPoolSize = 24
 parameterDict = getRenkoParameterDict()
 pool = Pool(threadPoolSize)
 with open('result.csv', 'w') as f_out:
-    out_colnames = ["stockName","width", "window","profitPercentage"]
+    out_colnames = ["stockName","brickHeightPercentage", "stepCount", "profitPercentage"]
     csv_writer = csv.DictWriter(f_out, fieldnames = out_colnames)
     csv_writer.writeheader()
     for stock in stockList:
         csvList = bruteAnalysis(stock, parameterDict, pool, threadPoolSize)
         for point in csvList:
             csv_writer.writerow(point)
-        break
 pool.terminate()
 pool.join()
 
 
-# In[7]:
+# In[6]:
 
 
 # parameterDict = getRenkoParameterDict()
@@ -161,7 +131,7 @@ pool.join()
 # df, dateList = preProcessData(folderName, stockName, [], [], 'bleh')
 
 
-# In[8]:
+# In[3]:
 
 
 # money = 1
@@ -172,51 +142,25 @@ pool.join()
 # paramEntry = parameterGrid[0]
 
 
-# In[9]:
+# In[4]:
 
 
-# newDay = Day(0, money)
-for date in dateList:
-    new_df = df[(df.date == date)]
-    day = renkoScript(new_df, paramEntry, newDay, stockType, verbose)
-    if verbose:
-        print(date, newDay.money, day.money, day.dailyTrades)
-    sellEndOfDay = getSellEndOfDay(date, stockType)
-    day.printOpenTrade()
-    newDay = day.initializeNextDay(sellEndOfDay)    
-
-yearlyProfitPercentage = (day.money - 1) * 100
-print yearlyProfitPercentage    
-
-
-# In[7]:
-
-
-renkoDeque = deque(maxlen=10)
-renkoDeque.append(1)
-renkoDeque.append(2)
-
-
-# In[8]:
-
-
-len(renkoDeque)
+# # newDay = Day(0, money)
+# for date in dateList:
+#     new_df = df[(df.date == date)]
+#     day = renkoScript(new_df, paramEntry, newDay, stockType, verbose)
+#     if verbose:
+#         print(date, newDay.money, day.money, day.dailyTrades)
+#     sellEndOfDay = getSellEndOfDay(date, stockType)
+#     day.printOpenTrade()
+#     newDay = day.initializeNextDay(sellEndOfDay)    
+#     break
+# yearlyProfitPercentage = (day.money - 1) * 100
+# print yearlyProfitPercentage    
 
 
 # In[17]:
 
 
-renkoDeque.pop()
-
-
-# In[18]:
-
-
-len(renkoDeque)
-
-
-# In[19]:
-
-
-print(renkoDeque)
+len(futuresList)
 

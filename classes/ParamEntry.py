@@ -35,19 +35,22 @@ class ParamEntry:
 
 class RenkoParamEntry:
     def __init__(self, params, stockName):
-        self.brickHeight = params['brickHeight']
+        self.brickHeightPercentage = params['brickHeightPercentage']
         self.stepCount = params['stepCount']
         self.stockName = stockName
+        self.brickHeight = None
         self.profitPercentage = None
 
+    def setBrickHeight(self, listPrice):
+        self.brickHeight = self.brickHeightPercentage * listPrice / 100.0
 
     def getCsvPoint(self):
         newPoint = {'stockName':self.stockName,
-                    'brickHeight':self.brickHeight,
+                    'brickHeightPercentage':self.brickHeightPercentage,
                     'stepCount':self.stepCount,
                     'profitPercentage':self.profitPercentage
                     }
         return newPoint
 
     def toString(self):
-        print 'Stock Name: {}, brickHeight: {}, stepCount: {}, ProfitPer: {}'.format(self.stockName, self.brickHeight, self.stepCount, self.profitPercentage)
+        print 'Stock Name: {}, brickHeightPercentage: {}, stepCount: {}, ProfitPer: {}'.format(self.stockName, self.brickHeightPercentage, self.stepCount, self.profitPercentage)
