@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[37]:
+# In[12]:
 
 
 import time
@@ -17,10 +17,11 @@ from utils.TimeUtil import isLastThursdayOfMonth
 from utils.FileUtil import getFutureList
 from collections import deque
 from utils.Constants import futuresList
+from classes.YearEntry import Year
 # import copy 
 
 
-# In[38]:
+# In[13]:
 
 
 def getSellEndOfDay(currentDate, stockType):
@@ -35,22 +36,26 @@ def renkoExperiment(paramList, stockType = 'FUTURES', verbose=False):
     newDay = Day(0, money, getSellEndOfDay(dateList[0], stockType))
     renkoDeque = deque(maxlen=paramEntry.stepCount)
     paramEntry.setBrickHeight(df['openingPrice'][0])
+    year = Year()
     for date in dateList:
         new_df = df[(df.date == date)]
         day = renkoScript(new_df, paramEntry, newDay, renkoDeque, stockType, verbose)
-#         if verbose:
-#             print(date, newDay.money, day.money, day.dailyTrades)
-#             day.printOpenTrade()
+        if verbose:
+            print(date, newDay.money, day.money, day.dailyTrades)
+            day.printOpenTrade()
         sellEndOfDay = getSellEndOfDay(date, stockType)
-        newDay = day.initializeNextDay(sellEndOfDay)   
+        newDay = day.initializeNextDay(sellEndOfDay)
+#         day.printAllTrades(True)
+#         year.dayOver(day)
+        
     yearlyProfitPercentage = (day.money - 1) * 100
     paramEntry.profitPercentage = yearlyProfitPercentage
     paramEntry.toString()
-   
+    
     return paramEntry
 
 
-# In[39]:
+# In[14]:
 
 
 def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
@@ -79,7 +84,7 @@ def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
     return csvList
 
 
-# In[43]:
+# In[15]:
 
 
 def getParameterGrid(parameterDict):
@@ -87,10 +92,10 @@ def getParameterGrid(parameterDict):
     return parameterGrid
 
 def getRenkoParameterDict():
-    brickHeightPercentage = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
-    stepCount = [3,4,5,7]
-#     brickHeightPercentage = [0.1]
-#     stepCount = [3]
+#     brickHeightPercentage = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+#     stepCount = [3,4,5,7]
+    brickHeightPercentage = [0.05]
+    stepCount = [3]
 
     parameterDict = {
                     'brickHeightPercentage' : brickHeightPercentage, 
@@ -99,14 +104,14 @@ def getRenkoParameterDict():
     return parameterDict
 
 
-# In[44]:
+# In[16]:
 
 
 # stockList = futuresList
-stockList= ['RELIANCE']
+stockList= ['ADANIENT_F1']
 
 
-# In[45]:
+# In[17]:
 
 
 threadPoolSize = 24
@@ -124,7 +129,7 @@ pool.terminate()
 pool.join()
 
 
-# In[6]:
+# In[ ]:
 
 
 # parameterDict = getRenkoParameterDict()
@@ -166,4 +171,41 @@ pool.join()
 
 
 len(futuresList)
+
+
+# In[14]:
+
+
+a = [1,2]
+b = [1,3,4]
+
+
+# In[15]:
+
+
+c = []
+
+
+# In[16]:
+
+
+map(lambda x : c.append(x), a)
+
+
+# In[17]:
+
+
+c
+
+
+# In[18]:
+
+
+map(lambda x : c.append(x), b)
+
+
+# In[19]:
+
+
+c
 

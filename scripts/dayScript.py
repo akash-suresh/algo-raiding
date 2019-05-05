@@ -57,9 +57,9 @@ def dayScript(df, param, day, stockType, verbose = False):
 
 def getNewRenko(lastRenko, minute, brickHeight):
     if minute.high > lastRenko.high + brickHeight:
-        renko = Renko(lastRenko.high, lastRenko.high + brickHeight, 1)
+        renko = Renko(lastRenko.high, lastRenko.high + brickHeight, 1, minute.time)
     elif minute.low < lastRenko.low - brickHeight:
-        renko = Renko(lastRenko.low - brickHeight, lastRenko.low, -1)
+        renko = Renko(lastRenko.low - brickHeight, lastRenko.low, -1, minute.time)
     else:
         return None
     return renko
@@ -77,7 +77,7 @@ def generateRenko(minute, renkoDeque, brickHeight, stepCount, verbose):
     # import pdb;pdb.set_trace()
     size = len(renkoDeque)
     if size == 0:
-        newRenko = Renko(minute.openingPrice, minute.openingPrice, 0)
+        newRenko = Renko(minute.openingPrice, minute.openingPrice, 0, minute.time)
         newRenko.toString(verbose)
         renkoDeque.append(newRenko)
     else:
@@ -111,7 +111,7 @@ def renkoScript(df, param, day, renkoDeque, stockType, verbose = False):
     marketOpen, marketClose = getMarketDetails(stockType)
     for row in df.iterrows():
         minute = Minute(row)
-        minute.toString(verbose)
+        # minute.toString(verbose)
         renkoDeque = generateRenko(minute, renkoDeque, param.brickHeight, param.stepCount, verbose)
         if len(renkoDeque) == param.stepCount:
             if marketOpen <= minute.time < marketClose:

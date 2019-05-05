@@ -28,7 +28,11 @@ class Day:
 
     def printOpenTrade(self):
         if self.currentTrade:
-            print 'Enter Price: {}, Enter Time: {}, TradeType: {}'.format(self.currentTrade.enterPrice, self.currentTrade.timeEntered, self.currentTrade.tradeType)
+            print 'OpenTrade - Enter Price: {}, Enter Time: {}, TradeType: {}'.format(self.currentTrade.enterPrice, self.currentTrade.timeEntered, self.currentTrade.tradeType)
+
+    def printAllTrades(self, verbose = False):
+        for trade in self.trades:
+            trade.toString(verbose)
 
     # @property
     # def enterPrice(self):

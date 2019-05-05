@@ -42,8 +42,11 @@ class Trade:
             self.calculateProfitPercentage(self.enterPrice, self.exitPrice, brokerage)
         elif self.tradeType == -1:
             self.calculateProfitPercentage(self.exitPrice, self.enterPrice, brokerage)
+        self.toString(verbose)
+
+    def toString(self, verbose = False):
         if verbose:
-            print(self.tradeType, self.enterPrice, self.exitPrice, revConvertTime(self.timeEntered), revConvertTime(self.timeExited), self.profitPercentage)
+            print("{:d}, {:.4f}, {:.4f}, {:s}, {:s}, {:.4f}".format(self.tradeType, self.enterPrice, self.exitPrice, revConvertTime(self.timeEntered), revConvertTime(self.timeExited), self.profitPercentage))
 
     def calculateProfitPercentage(self, buyPrice, sellPrice, brokerage):
         self.profitPercentage = 100*(sellPrice*(1-brokerage) - buyPrice)/(1.0*buyPrice)
