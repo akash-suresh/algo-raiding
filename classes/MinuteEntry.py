@@ -1,4 +1,4 @@
-from utils.TimeUtil import convertTime
+from utils.TimeUtil import convertTime, revConvertTime
 
 
 def parseMinuteData(minuteData, shortTerm, longTerm):
@@ -18,3 +18,7 @@ class Minute:
     def __init__(self, minuteData, shortTerm = 0, longTerm = 0):
         self.time, self.openingPrice, self.low, self.high, self.closingPrice, self.diff = parseMinuteData(minuteData, shortTerm, longTerm)
         self.listPrice = 0.5 * (self.openingPrice + self.closingPrice)
+
+    def toString(self, verbose):
+        if verbose:
+            print 'Time: {}, Low: {}, High: {}'.format(revConvertTime(self.time), self.low, self.high)

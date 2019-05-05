@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[23]:
+# In[37]:
 
 
 import time
@@ -20,7 +20,7 @@ from utils.Constants import futuresList
 # import copy 
 
 
-# In[24]:
+# In[38]:
 
 
 def getSellEndOfDay(currentDate, stockType):
@@ -38,26 +38,25 @@ def renkoExperiment(paramList, stockType = 'FUTURES', verbose=False):
     for date in dateList:
         new_df = df[(df.date == date)]
         day = renkoScript(new_df, paramEntry, newDay, renkoDeque, stockType, verbose)
-        if verbose:
-            print(date, newDay.money, day.money, day.dailyTrades)
-            day.printOpenTrade()
+#         if verbose:
+#             print(date, newDay.money, day.money, day.dailyTrades)
+#             day.printOpenTrade()
         sellEndOfDay = getSellEndOfDay(date, stockType)
         newDay = day.initializeNextDay(sellEndOfDay)   
     yearlyProfitPercentage = (day.money - 1) * 100
-    print(yearlyProfitPercentage)
     paramEntry.profitPercentage = yearlyProfitPercentage
     paramEntry.toString()
    
     return paramEntry
 
 
-# In[25]:
+# In[39]:
 
 
 def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
     csvList = []
     parameterGrid = getParameterGrid(parameterDict)
-    folderName = "IntradayData_2018"
+    folderName = "NIFTY50_APR2019"
     df, dateList = preProcessData(folderName, stockName, [], [], 'blah')
     parameterGridSize = len(parameterGrid)
     print('param combination = ' , parameterGridSize)
@@ -80,7 +79,7 @@ def bruteAnalysis(stockName, parameterDict, pool, threadPoolSize):
     return csvList
 
 
-# In[29]:
+# In[43]:
 
 
 def getParameterGrid(parameterDict):
@@ -90,6 +89,9 @@ def getParameterGrid(parameterDict):
 def getRenkoParameterDict():
     brickHeightPercentage = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
     stepCount = [3,4,5,7]
+#     brickHeightPercentage = [0.1]
+#     stepCount = [3]
+
     parameterDict = {
                     'brickHeightPercentage' : brickHeightPercentage, 
                     'stepCount': stepCount
@@ -97,13 +99,14 @@ def getRenkoParameterDict():
     return parameterDict
 
 
-# In[30]:
+# In[44]:
 
 
-stockList = futuresList
+# stockList = futuresList
+stockList= ['RELIANCE']
 
 
-# In[28]:
+# In[45]:
 
 
 threadPoolSize = 24

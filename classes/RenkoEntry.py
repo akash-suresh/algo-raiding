@@ -1,17 +1,9 @@
 class Renko:
-    def __init__(self, low, high):
+    def __init__(self, low, high, renkoType):
         self.low = low
         self.high = high
-        self.renkoType = self.getRenkoType()
+        self.renkoType = renkoType
 
-    def getRenkoType(self):
-        if self.low > self.high:
-            renkoType = -1
-        elif self.high > self.low:
-            renkoType = 1
-        else:
-            renkoType = 0
-        return renkoType
-
-    def toString(self):
-        print('low - {}, high - {}, type - {}'.format(self.low, self.high, self.renkoType))
+    def toString(self, verbose):
+        if verbose:
+            print('low: {}, high: {}, type: {}'.format(self.low, self.high, self.renkoType))

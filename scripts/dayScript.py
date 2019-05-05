@@ -57,9 +57,9 @@ def dayScript(df, param, day, stockType, verbose = False):
 
 def getNewRenko(lastRenko, minute, brickHeight):
     if minute.high > lastRenko.high + brickHeight:
-        renko = Renko(lastRenko.high, lastRenko.high + brickHeight)
+        renko = Renko(lastRenko.high, lastRenko.high + brickHeight, 1)
     elif minute.low < lastRenko.low - brickHeight:
-        renko = Renko(lastRenko.low - brickHeight, lastRenko.low)
+        renko = Renko(lastRenko.low - brickHeight, lastRenko.low, -1)
     else:
         return None
     return renko
@@ -73,11 +73,12 @@ def printRenkoDeque(renkoDeque):
         print('empty')
 
 
-def generateRenko(minute, renkoDeque, brickHeight, stepCount):
+def generateRenko(minute, renkoDeque, brickHeight, stepCount, verbose):
     # import pdb;pdb.set_trace()
     size = len(renkoDeque)
     if size == 0:
-        newRenko = Renko(minute.openingPrice, minute.openingPrice)
+        newRenko = Renko(minute.openingPrice, minute.openingPrice, 0)
+        newRenko.toString(verbose)
         renkoDeque.append(newRenko)
     else:
         lastRenko = renkoDeque[-1]
@@ -86,6 +87,7 @@ def generateRenko(minute, renkoDeque, brickHeight, stepCount):
             if size == stepCount:
                 renkoDeque.popleft()
             renkoDeque.append(newRenko)
+            newRenko.toString(verbose)
     return renkoDeque
 
 def getEmotion(renkoDeque):
@@ -109,7 +111,8 @@ def renkoScript(df, param, day, renkoDeque, stockType, verbose = False):
     marketOpen, marketClose = getMarketDetails(stockType)
     for row in df.iterrows():
         minute = Minute(row)
-        renkoDeque = generateRenko(minute, renkoDeque, param.brickHeight, param.stepCount)
+        minute.toString(verbose)
+        renkoDeque = generateRenko(minute, renkoDeque, param.brickHeight, param.stepCount, verbose)
         if len(renkoDeque) == param.stepCount:
             if marketOpen <= minute.time < marketClose:
                 if day.boughtFlag == 0:
