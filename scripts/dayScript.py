@@ -55,55 +55,7 @@ def dayScript(df, param, day, stockType, verbose = False):
 
     return day
 
-def getNewRenko(lastRenko, minute, brickHeight):
-    if minute.high > lastRenko.high + brickHeight:
-        renko = Renko(lastRenko.high, lastRenko.high + brickHeight, 1, minute.time)
-    elif minute.low < lastRenko.low - brickHeight:
-        renko = Renko(lastRenko.low - brickHeight, lastRenko.low, -1, minute.time)
-    else:
-        return None
-    return renko
-
-
-def printRenkoDeque(renkoDeque):
-    if len(renkoDeque)>0:
-        for i in renkoDeque:
-            i.toString()
-    else:
-        print('empty')
-
-
-def generateRenko(minute, renkoDeque, brickHeight, stepCount, verbose):
-    # import pdb;pdb.set_trace()
-    size = len(renkoDeque)
-    if size == 0:
-        newRenko = Renko(minute.openingPrice, minute.openingPrice, 0, minute.time)
-        newRenko.toString(verbose)
-        renkoDeque.append(newRenko)
-    else:
-        lastRenko = renkoDeque[-1]
-        newRenko = getNewRenko(lastRenko, minute, brickHeight)
-        if newRenko:
-            if size == stepCount:
-                renkoDeque.popleft()
-            renkoDeque.append(newRenko)
-            newRenko.toString(verbose)
-    return renkoDeque
-
-def getEmotion(renkoDeque):
-    emotion = 0
-    for renko in renkoDeque:
-        emotion += renko.renkoType
-    return emotion
-
-def renkoExitLogic(renkoDeque, stepCount, boughtFlag):
-    emotion = getEmotion(renkoDeque)
-    if abs(emotion) == stepCount - 2:
-        lastRenko = renkoDeque[-1]
-        if lastRenko.renkoType == -1 * boughtFlag:
-            return True
-    return False
-
+from utils.RenkoUtil import *
 
 def renkoScript(df, param, day, renkoDeque, stockType, verbose = False):
     if day.currentTrade:

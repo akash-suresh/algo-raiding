@@ -1,4 +1,4 @@
-from utils.TimeUtil import revConvertTime
+from utils.TimeUtil import revConvertDateTime
 
 class Renko:
     def __init__(self, low, high, renkoType, time):
@@ -7,6 +7,6 @@ class Renko:
         self.renkoType = renkoType
         self.time = time
 
-    def toString(self, verbose):
+    def toString(self, verbose=False):
         if verbose:
-            print('time: {}, low: {}, high: {}, type: {}'.format(revConvertTime(self.time), self.low, self.high, self.renkoType))
+            print('time: {}, low: {}, high: {}, type: {}'.format(self.time, self.low, self.high, self.renkoType))

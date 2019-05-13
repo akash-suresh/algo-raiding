@@ -11,6 +11,9 @@ def revConvertTime(timeInt):
     timeMin = timeInt%60
     return str(timeHr) + ':' + str(timeMin)
 
+def revConvertDateTime(x):
+    return x.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+
 def isLastThursdayOfMonth(currentDate):
     dateString = str(currentDate)
     dt = date(int(dateString[:4]), int(dateString[4:6]),int(dateString[6:8]))

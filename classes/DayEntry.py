@@ -1,3 +1,5 @@
+import logging
+
 class Day:
 
     def __init__(self, boughtFlag = 0, money = 1, sellEndOfDay = True):
@@ -14,10 +16,13 @@ class Day:
         return nextDay
 
     def addTrade(self, trade):
+        logging.debug('Inside addTrade to day fn')
         self.money = self.money*(1 + trade.profitPercentage/100.0)
+        logging.debug('money {}'.format(self.money))
         self.trades.append(trade)
         self.dailyTrades = len(self.trades)
         self.reset()
+        logging.debug('after reset bought flag : {}'.format(self.boughtFlag))
 
     def getLastTrade(self):
         return self.trades[self.dailyTrades - 1]

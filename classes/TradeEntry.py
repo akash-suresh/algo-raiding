@@ -1,4 +1,5 @@
 from utils.TimeUtil import revConvertTime
+import logging
 
 class Trade:
 
@@ -29,6 +30,7 @@ class Trade:
         self.exitTrade(exitType, timeExited, 0, verbose)
 
     def exitTrade(self, exitType, timeExited, eodPrice, verbose = False):
+        logging.debug('Inside exitTrade fn')
         brokerage = 0.0002
         self.timeExited = timeExited
         if exitType == 'stopLoss':
@@ -46,7 +48,8 @@ class Trade:
 
     def toString(self, verbose = False):
         if verbose:
-            print("{:d}, {:.4f}, {:.4f}, {:s}, {:s}, {:.4f}".format(self.tradeType, self.enterPrice, self.exitPrice, revConvertTime(self.timeEntered), revConvertTime(self.timeExited), self.profitPercentage))
+            print("{:d}, {:.4f}, {:.4f}, {:.4f}".format(self.tradeType, self.enterPrice, self.exitPrice, self.profitPercentage))
+            print("{} {}".format(self.timeEntered, self.timeExited))
 
     def calculateProfitPercentage(self, buyPrice, sellPrice, brokerage):
         self.profitPercentage = 100*(sellPrice*(1-brokerage) - buyPrice)/(1.0*buyPrice)
