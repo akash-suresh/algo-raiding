@@ -5,3 +5,4 @@ result.csv
 *.pyc
 NIFTY50_APR2019/*
 samplealgo01/*
+kiteApp/kiteapp/*
