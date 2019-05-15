@@ -2,6 +2,15 @@ from classes.RenkoEntry import Renko
 import logging
 
 
+#
+# def getNewRenko(lastRenko, minute, brickHeight):
+#     if minute.listPrice >= lastRenko.high + brickHeight:
+#         renko = Renko(minute.listPrice - brickHeight, minute.listPrice, 1, minute.time)
+#     elif minute.listPrice <= lastRenko.low - brickHeight:
+#         renko = Renko(minute.listPrice, minute.listPrice + brickHeight, -1, minute.time)
+#     else:
+#         return None
+#     return renko
 
 def getNewRenko(lastRenko, minute, brickHeight):
     if minute.listPrice >= lastRenko.high + brickHeight:
@@ -21,7 +30,7 @@ def getNewRenko(lastRenko, minute, brickHeight):
 #         print('empty')
 
 def printRenkoDeque(renkoDeque):
-    logging.debug('size of queue: {}'.format(len(renkoDeque)))
+    # logging.debug('size of queue: {}'.format(len(renkoDeque)))
     if len(renkoDeque)>0:
         for i in renkoDeque:
             i.toString(True)

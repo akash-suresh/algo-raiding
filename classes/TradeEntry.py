@@ -49,7 +49,7 @@ class Trade:
     def toString(self, verbose = False):
         if verbose:
             print("{:d}, {:.4f}, {:.4f}, {:.4f}".format(self.tradeType, self.enterPrice, self.exitPrice, self.profitPercentage))
-            print("{} {}".format(self.timeEntered, self.timeExited))
+            print("{} {}\n".format(self.timeEntered, self.timeExited))
 
     def calculateProfitPercentage(self, buyPrice, sellPrice, brokerage):
         self.profitPercentage = 100*(sellPrice*(1-brokerage) - buyPrice)/(1.0*buyPrice)
