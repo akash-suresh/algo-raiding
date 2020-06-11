@@ -1,6 +1,6 @@
 Experiments with Algorithmic trading. The basic idea was to leverage the volatility of the stock market, to make trades with minimal profit, based on the Renko charts.
 
-[<img src="reliance_renko.png" width="600"/>](reliance_renko.png)
+[<img src="reliance_renko.png" width="900"/>](reliance_renko.png)
 
 Data setup - 
 1. Download IntradayData_2018 from https://drive.google.com/file/d/1HTSIiA1j9qzqc-CIlOEbj6V1FdyRkH10/view?usp=sharing
